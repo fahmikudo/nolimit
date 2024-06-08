@@ -1,0 +1,40 @@
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.0
+    container_name: elasticsearch
+    restart: unless-stopped
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      cluster.name: elasticsearch-cluster
+      discovery.type: single-node
+      bootstrap.memory_lock: "true"
+      network.bind_host: 0.0.0.0
+      transport.host: 127.0.0.1
+      network.host: 0.0.0.0
+    healthcheck:
+      test: "curl -f http://localhost:9200 || exit 1"
+      start_period: 30s
+
+  metrics-employee:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: metrics-employee
+    ports:
+      - "8900:8900"
+    environment:
+      - server.port=8900
+      - spring.elasticsearch.uris=elasticsearch:9200
+    healthcheck:
+      test: ["CMD","http://localhost:8900/"]
+    depends_on:
+      - elasticsearch
+    restart: on-failure
+    links:
+      - elasticsearch:elasticsearch
+
+networks:
+  metrics-employee-network:
+
