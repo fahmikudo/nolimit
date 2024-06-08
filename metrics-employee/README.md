@@ -214,5 +214,6 @@ Response:
 }
 ````
 Or you can see it using openAPI by using this link `http://localhost:8900/swagger-ui.html`
+![metrics-employee-swagger](https://github.com/fahmikudo/nolimit/assets/20161826/0dd4e1ef-0d6d-43eb-abe1-021bc5e03b19)
 
 
