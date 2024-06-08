@@ -17,6 +17,7 @@ For building and running the application it's need:
 * Java 17
 * Maven 3.x.x
 * Spring Boot 3.x.x
+* Elasticsearch 6.8.0
 * Docker
 
 ## How to run application
