@@ -22,7 +22,8 @@ public class Post implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "content", columnDefinition = "text")
+    @Lob
+    @Column(name = "content", length = 500)
     private String content;
 
     @Column(name = "created_at")

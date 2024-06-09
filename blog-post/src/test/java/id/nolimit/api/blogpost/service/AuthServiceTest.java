@@ -133,6 +133,22 @@ class AuthServiceTest {
         Assertions.assertEquals("Test Name", authLoginResponse.name());
     }
 
+    @Test
+    void givenInvalidUser_whenExecuteGetUserActive_shouldGivenException() {
+        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.empty());
+        Exception e = Assertions.assertThrows(Exception.class, () -> authService.getUserActive("email@example.com"));
+        Assertions.assertTrue(e instanceof ResponseStatusException);
+        Assertions.assertEquals("User not found.", ((ResponseStatusException) e).getReason());
+    }
+
+    @Test
+    void givenValidUser_whenExecuteGetUserActive_shouldGivenValue() {
+        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(mockUser()));
+        User user = authService.getUserActive("email@example.com");
+        Assertions.assertEquals("email@example.com", user.getEmail());
+        Assertions.assertEquals("Test Name", user.getName());
+    }
+
     private User mockUser() {
         User user = new User();
         user.setId(1L);

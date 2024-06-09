@@ -3,10 +3,13 @@ package id.nolimit.api.blogpost.security;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import id.nolimit.api.blogpost.entity.LoginAbleUser;
+import id.nolimit.api.blogpost.entity.User;
 import id.nolimit.api.blogpost.exception.CustomRuntimeException;
+import id.nolimit.api.blogpost.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +29,9 @@ public class JWTUtil {
     @Value("${blogpost.service.jjwt.expiration}")
     private String expirationTime;
 
+    @Autowired
+    private UserRepository userRepository;
+
     public Claims getAllClaimsFromToken(String token) {
         return Jwts
                 .parserBuilder()
@@ -36,6 +42,11 @@ public class JWTUtil {
 
     public String getEmailFromToken(String token) {
         return getAllClaimsFromToken(token).get("email", String.class);
+    }
+
+    public User getUserFromToken(String token) {
+        String email = getAllClaimsFromToken(token).get("email", String.class);
+        return userRepository.findByEmail(email).orElse(null);
     }
 
     public Date getExpirationDateFromToken(String token) {

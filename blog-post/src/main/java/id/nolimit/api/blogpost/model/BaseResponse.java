@@ -24,5 +24,7 @@ public class BaseResponse <T> {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private LocalDateTime timestamp = LocalDateTime.now();
     private T data;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private PagingResponse page;
 
 }

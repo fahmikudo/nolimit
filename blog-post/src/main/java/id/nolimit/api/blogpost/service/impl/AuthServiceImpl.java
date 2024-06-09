@@ -69,6 +69,14 @@ public class AuthServiceImpl implements AuthService {
                 .build();
     }
 
+    @Override
+    public User getUserActive(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isEmpty())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found.");
+        return user.get();
+    }
+
     private void validatePassword(AuthRegistrationRequest request) {
         if (StringUtil.isNullOrEmpty(request.password()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password is required.");
