@@ -27,7 +27,8 @@ There are several ways to run this service. However, now we will try to run this
 ````
 docker compose up -d
 ````
-3. To stop application run this command
+3. Open URL `http://localhost:8901/swagger-ui.html` to see API Documentation 
+4. To stop application run this command
 ````
 docker compose down
 ````
