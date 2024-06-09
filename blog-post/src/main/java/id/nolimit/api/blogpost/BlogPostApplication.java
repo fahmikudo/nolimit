@@ -1,4 +1,4 @@
-package id.nolimit.api.blog_post;
+package id.nolimit.api.blogpost;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
