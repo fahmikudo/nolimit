@@ -1,0 +1,40 @@
+services:
+  mysql_db:
+    image: mysql:8.0.13
+    container_name: mysql_db
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: user123
+      MYSQL_DATABASE: blog_post
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user123
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    networks:
+      - backend
+    restart: unless-stopped
+
+  blog-post-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: blog-post-app
+    ports:
+      - "8901:8901"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql_db:3306/blog_post?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: user123
+    depends_on:
+      - mysql_db
+    networks:
+      - backend
+    restart: always
+
+volumes:
+  mysql_data:
+networks:
+  backend:
+    name: backend
+    driver: bridge
